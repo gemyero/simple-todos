@@ -1,3 +1,4 @@
+import {} from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { ReactiveDict } from 'meteor/reactive-dict';
 import { Tasks } from '../api/tasks';
@@ -7,6 +8,7 @@ import './task';
 
 Template.body.onCreated(function bodyOnCreated() {
   this.state = new ReactiveDict();
+  Meteor.subscribe('tasks');
 });
 
 Template.body.helpers({
@@ -17,17 +19,16 @@ Template.body.helpers({
     }
     return Tasks.find({}, { sort: { createdAt: -1 } });
   },
+  incompleteCount() {
+    return Tasks.find({ checked: false }).count();
+  }
 });
 
 Template.body.events({
   'submit .new-task'(e) {
     e.preventDefault();
 
-    Tasks.insert({
-      text: e.target.text.value,
-      createdAt: new Date(),
-      checked: false
-    });
+    Meteor.call('tasks.insert', e.target.text.value);
 
     e.target.text.value = '';
   },

@@ -1,0 +1,5 @@
+db
+db.insert({text: "Task #1", createdAt: new Date()});
+db.tasks.insert({text: "Task #1", createdAt: new Date()});
+db.tasks.insert({text: "Task #2", createdAt: new Date()});
+db.tasks.insert({text: "Task #3", createdAt: new Date()});
